@@ -1986,7 +1986,7 @@ async function _findFlapSalt(tokenImplAddr) {
 
 // ── FLAP LAUNCH ─ newTokenV5 (current recommended method per docs.flap.sh) ─
 async function _launchFlap({ name, ticker, desc, tw, tg, web, logoUrl, signer, userAddr }) {
-  const PORTAL   = ethers.getAddress('0xe2cE6ab80874Fa9Fa2aAE65D277Dd6B8e65C9De0');
+  PORTAL = ethers.getAddress('0xe2cE6ab80874Fa9Fa2aAE65D277Dd6B8e65C9De0');
   // Non-tax token implementation address (from docs)
   const TOKEN_IMPL = '0x8B4329947e34B6d56D71A3385caC122BaDe7d78D';
 
@@ -2964,7 +2964,7 @@ const VAULT_BYTECODES = {};
 </html>async function _uploadFlapMeta(imageDataUrl, metaObj) {
   // Flap official upload API: https://funcs.flap.sh/api/upload
   // GraphQL multipart upload
-  const MUTATION = `mutation Create($file: Upload!, $meta: MetadataInput!) { create(file: $file, meta: $meta) }`;
+  MUTATION = `mutation Create($file: Upload!, $meta: MetadataInput!) { create(file: $file, meta: $meta) }`;
   const form = new FormData();
   form.append('operations', JSON.stringify({
     query: MUTATION,
@@ -3003,8 +3003,8 @@ const VAULT_BYTECODES = {};
 
 // ── FLAP SALT FINDER ──────────────────────────────────────────────────────
 async function _findFlapSalt() {
-  const PORTAL     = '0xe2cE6ab80874Fa9Fa2aAE65D277Dd6B8e65C9De0';
-  const TOKEN_IMPL = '0x8B4329947e34B6d56D71A3385caC122BaDe7d78D';
+  PORTAL = '0xe2cE6ab80874Fa9Fa2aAE65D277Dd6B8e65C9De0';
+  TOKEN_IMPL = '0x8B4329947e34B6d56D71A3385caC122BaDe7d78D';
   const initcode   = '0x3d602d80600a3d3981f3363d3d373d3d3d363d73'
                    + TOKEN_IMPL.slice(2).toLowerCase()
                    + '5af43d82803e903d91602b57fd5bf3';
@@ -3025,8 +3025,8 @@ async function _findFlapSalt() {
 
 // ── FLAP LAUNCH — newTokenV5 per official docs ────────────────────────────
 async function _launchFlap({ name, ticker, desc, tw, tg, web, logoUrl, signer, userAddr }) {
-  const PORTAL = ethers.getAddress('0xe2cE6ab80874Fa9Fa2aAE65D277Dd6B8e65C9De0');
-  const ABI = [
+  PORTAL = ethers.getAddress('0xe2cE6ab80874Fa9Fa2aAE65D277Dd6B8e65C9De0');
+  ABI = [
     `function newTokenV5((
       string name, string symbol, string meta,
       uint8 dexThresh, bytes32 salt, uint16 taxRate,
@@ -3232,6 +3232,18 @@ function onRevSel() {
 // ════════════════════════════════════════
 // CA STORE / VAULT FACTORY
 // ════════════════════════════════════════
+VAULT_CONFIGS = {
+  bnbshare:`<div class="vault-cfg"><div class="vault-cfg-title">🔗 BNB Share Vault Config</div><div class="form-group"><label class="form-label">Recipients <span class="label-tip">Wallet + share %</span></label><div id="bnbShareRecipients" style="display:flex;flex-direction:column;gap:6px;"><div style="display:flex;gap:6px;align-items:center;"><input class="form-input flap-focus" placeholder="0x... wallet" style="flex:1;"><input class="form-input flap-focus" placeholder="%" style="max-width:60px;"><input class="form-input flap-focus" placeholder="@twitter (opt)" style="max-width:130px;"></div></div><button onclick="addBnbShareRow()" style="margin-top:7px;padding:6px 12px;background:transparent;border:1px dashed var(--border2);border-radius:7px;font-family:var(--font-m);font-size:11px;color:var(--muted);cursor:pointer;width:100%;">+ Add Recipient</button></div></div>`,
+  gift:`<div class="vault-cfg"><div class="vault-cfg-title">🎁 Gift Vault Config</div><div class="form-group"><label class="form-label">X / Twitter Account</label><div style="display:flex;align-items:center;gap:0;background:var(--bg2);border:1px solid var(--border);border-radius:9px;overflow:hidden;"><span style="padding:10px 12px;font-size:12px;font-family:var(--font-m);color:var(--muted);border-right:1px solid var(--border);">@</span><input class="form-input flap-focus" placeholder="twitter_handle" style="border:none;background:transparent;"></div></div><div class="form-group"><label class="form-label">Destination EVM Address</label><input class="form-input flap-focus" placeholder="0x..."></div></div>`,
+  split:`<div class="vault-cfg"><div class="vault-cfg-title">✂️ Split Vault Config</div><div class="form-group"><label class="form-label">Recipients <span class="label-tip">Must total 100%</span></label><div id="splitRecipients" style="display:flex;flex-direction:column;gap:6px;"><div style="display:flex;gap:6px;"><input class="form-input flap-focus" placeholder="0x... wallet" style="flex:1;"><input class="form-input flap-focus" placeholder="%" style="max-width:60px;"></div><div style="display:flex;gap:6px;"><input class="form-input flap-focus" placeholder="0x... wallet" style="flex:1;"><input class="form-input flap-focus" placeholder="%" style="max-width:60px;"></div></div><button onclick="addSplitRow()" style="margin-top:7px;padding:6px 12px;background:transparent;border:1px dashed var(--border2);border-radius:7px;font-family:var(--font-m);font-size:11px;color:var(--muted);cursor:pointer;width:100%;">+ Add</button></div></div>`,
+  buyback:`<div class="vault-cfg"><div class="vault-cfg-title">🔥 Buyback & Burn Vault Config</div><div class="form-group"><label class="form-label">Buyback Trigger Threshold</label><div style="display:flex;align-items:center;gap:0;background:var(--bg2);border:1px solid var(--border);border-radius:9px;overflow:hidden;"><input class="form-input flap-focus" placeholder="e.g. 0.1" style="border:none;background:transparent;"><span style="padding:10px 12px;font-size:12px;font-family:var(--font-m);color:var(--muted);border-left:1px solid var(--border);">BNB</span></div><span style="font-size:10px;color:var(--muted);font-family:var(--font-m);margin-top:4px;display:block;">Auto-buybacks when accumulated tax reaches this amount.</span></div></div>`,
+  burndividend:`<div class="vault-cfg"><div class="vault-cfg-title">🦋 Burn Dividend Vault Config</div><div class="form-group"><label class="form-label">Burn Rate</label><div style="display:flex;gap:8px;"><button class="tax-preset active-preset" onclick="selectBurnRate(this)">25%</button><button class="tax-preset" onclick="selectBurnRate(this)">50%</button><button class="tax-preset" onclick="selectBurnRate(this)">75%</button><button class="tax-preset" onclick="selectBurnRate(this)">100%</button></div><span style="font-size:10px;color:var(--muted);font-family:var(--font-m);margin-top:6px;display:block;">⚠️ Always use the Burn function in Tax Info panel — never transfer directly to DeXari.</span></div></div>`,
+  silent:`<div class="vault-cfg"><div class="vault-cfg-title">🔇 Silent Vault Config</div><div style="font-size:11px;font-family:var(--font-m);color:var(--muted);line-height:1.55;margin-bottom:10px;">"Invisible" tax-free sale and token destruction. Reuses taxes with a friendly exit mechanism — reduces selling pressure without affecting the chart.</div><div class="form-group"><label class="form-label">Operator Wallet</label><input class="form-input flap-focus" placeholder="0x... operator address"></div></div>`,
+  lpstaking:`<div class="vault-cfg"><div class="vault-cfg-title">💧 LP Staking Dividend Vault Config</div><div class="form-group"><label class="form-label">Distribution Interval</label><select class="form-select flap-focus"><option>Daily</option><option>Weekly</option><option>On threshold reached</option></select></div><div class="form-group"><label class="form-label">Min Stake Duration (days)</label><input class="form-input flap-focus" placeholder="e.g. 7"></div></div>`,
+  tokenstaking:`<div class="vault-cfg"><div class="vault-cfg-title">🪙 Token Staking Dividend Vault Config</div><div class="form-group"><label class="form-label">Distribution Interval</label><select class="form-select flap-focus"><option>Daily</option><option>Weekly</option><option>On threshold reached</option></select></div><div class="form-group"><label class="form-label">Min Stake Duration (days)</label><input class="form-input flap-focus" placeholder="e.g. 7"></div></div>`,
+  custom:`<div class="vault-cfg"><div class="vault-cfg-title">⚙️ Custom Vault Factory</div><div class="form-group"><label class="form-label">Vault Factory Contract Address</label><input class="form-input flap-focus" id="customVaultAddr" placeholder="0x... vault factory contract address" oninput="onCustomVaultInput(this.value)"></div><div id="customVaultSchema" style="display:none;margin-top:8px;"></div><span style="font-size:10px;color:var(--muted);font-family:var(--font-m);margin-top:6px;display:block;">UI is auto-generated from the contract's on-chain schema. <a href="#" style="color:#a97bff;">Learn how to build your own Vault & VaultFactory ↗</a></span></div>`
+};
+
 function selectVault(el,type) {
   document.querySelectorAll('.vault-option').forEach(v=>v.classList.remove('active-vault'));
   el.classList.add('active-vault');
@@ -3265,7 +3277,7 @@ function onCustomVaultInput(val) {
 // ════════════════════════════════════════
 // VAULT SYSTEM (BNBAgent owner panel)
 // ════════════════════════════════════════
-const VAULT_FEE = 0.20;
+VAULT_FEE = 0.20;
 let VAULT_TOKENS = [];
 let ownerTotalEarned = 0;
 
@@ -3414,7 +3426,7 @@ function closeIfOverlay(e,id) { if(e.target===document.getElementById(id)) close
 // ════════════════════════════════════════
 // WALLET DEFINITIONS — auto-detect like Four.meme
 // ════════════════════════════════════════
-const WALLETS = [
+WALLETS = [
   {
     id: 'metamask',
     name: 'MetaMask',
@@ -3731,7 +3743,7 @@ function selectVault(el, type) {
 // ─────────────────────────────────────────────
 
 // ── BNBAgent Vault Factory ABI ──
-const FACTORY_ABI = [
+FACTORY_ABI = [
   "function deployBNBShareVault(address token, address[] wallets, uint256[] shares) returns (address)",
   "function deployGiftVault(address token, address recipient) returns (address)",
   "function deploySplitVault(address token, address[] wallets, uint256[] bps) returns (address)",
@@ -3745,7 +3757,7 @@ const FACTORY_ABI = [
 
 // ── Factory address (deploy this first, then update here) ──
 // Set to 'PENDING' until factory is deployed by BNBAgent team
-const FACTORY_ADDRESS = 'PENDING';
+FACTORY_ADDRESS = 'PENDING';
 
 // ── VAULT DEPLOY MODAL ──
 function openVaultDeploy(type) {
@@ -3953,7 +3965,7 @@ function setVaultAsFactory() {
 }
 
 // ── VAULT ABIs for direct deploy fallback ──
-const VAULT_ABIS = {
+VAULT_ABIS = {
   bnbshare:     ["constructor(address token, address[] wallets, uint256[] shares)"],
   gift:         ["constructor(address token, address recipient)"],
   split:        ["constructor(address token, address[] wallets, uint256[] bps)"],
@@ -3966,7 +3978,7 @@ const VAULT_ABIS = {
 
 // Bytecodes are not included here — require factory deployment
 // Factory should be deployed by BNBAgent team at FACTORY_ADDRESS above
-const VAULT_BYTECODES = {};
+VAULT_BYTECODES = {};
 </script>
 
 </body>
