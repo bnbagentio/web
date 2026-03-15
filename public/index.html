@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>BNBAgent Registered Vaults Fixed</title>
+<style>
+:root{--bg:#07111f;--panel:#0d1728;--line:#22314d;--text:#f8fafc;--muted:#9fb0cc;--gold:#f3ba2f;--purple:#8b5cf6}
+*{box-sizing:border-box} body{margin:0;font-family:Inter,Arial,sans-serif;background:var(--bg);color:var(--text)}
+.wrap{max-width:1200px;margin:0 auto;padding:24px}.row{display:grid;grid-template-columns:460px 1fr;gap:18px}@media(max-width:1000px){.row{grid-template-columns:1fr}}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:18px}
+input,select,textarea{width:100%;padding:12px 14px;border-radius:12px;border:1px solid var(--line);background:#08111d;color:#fff}
+textarea{min-height:88px;resize:vertical}.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}.full{grid-column:1/-1}
+.title{font-size:28px;font-weight:900;margin-bottom:16px}.muted{color:var(--muted);font-size:13px}
+.btns{display:flex;gap:10px;flex-wrap:wrap}button{padding:12px 16px;border:0;border-radius:12px;font-weight:800;cursor:pointer}
+.btn-primary{background:var(--gold);color:#111827}.btn-ghost{background:#111827;color:#fff;border:1px solid var(--line)}
+.toolbar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px}.pill{padding:9px 12px;border-radius:999px;border:1px solid var(--line);background:#08111d;color:#fff;cursor:pointer}.pill.active{background:var(--gold);color:#111827}
+.list{display:grid;gap:10px}.item{padding:14px;border:1px solid var(--line);border-radius:14px;background:#08111d}.item .top{display:flex;justify-content:space-between;gap:12px;align-items:center}
+.tag{padding:4px 8px;border-radius:999px;background:#111827;border:1px solid var(--line);font-size:12px}.links{display:flex;gap:12px;flex-wrap:wrap;margin-top:8px}
+a{color:var(--gold);text-decoration:none}.progress{height:10px;background:#111827;border-radius:999px;border:1px solid var(--line);overflow:hidden}.bar{height:100%;background:linear-gradient(90deg,var(--gold),var(--purple));width:0%}
+.status{white-space:pre-wrap;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;color:#dbeafe;background:#08111d;padding:12px;border-radius:12px;border:1px solid var(--line);min-height:96px}.hidden{display:none}
+</style></head><body><div class="wrap"><div class="title">BNBAgent Registered Vaults Fixed</div><div class="row">
+<div class="card"><div class="grid">
+<div><div class="muted">Source</div><select id="source"><option value="flap">Flap</option><option value="four">Four</option></select></div>
+<div><div class="muted">Vault</div><select id="caStore"><option value="none">None (No Tax)</option><option value="bnbshare">BNB Share Vault</option><option value="split">Split Vault</option><option value="gift">Gift Vault (FlapXVault)</option><option value="custom">Custom Vault Factory</option></select></div>
+<div><div class="muted">Token Name</div><input id="name" value="BNBClaw"></div>
+<div><div class="muted">Symbol</div><input id="symbol" value="BNBCLAW"></div>
+<div><div class="muted">Supply</div><input id="supply" value="1000000000"></div>
+<div><div class="muted">Dev Buy (BNB)</div><input id="devBuy" value="0.01"></div>
+<div><div class="muted">Tax Rate (bps)</div><input id="taxRate" value="200"></div>
+<div class="full"><div class="muted">Description</div><textarea id="description">BNBClaw AI agent on BNB Chain</textarea></div>
+<div><div class="muted">Website</div><input id="website" placeholder="https://..."></div>
+<div><div class="muted">Twitter</div><input id="twitter" placeholder="https://x.com/..."></div>
+<div><div class="muted">Telegram</div><input id="telegram" placeholder="https://t.me/..."></div>
+<div><div class="muted">Beneficiary</div><input id="beneficiary" placeholder="optional"></div>
+<div id="bnbshareBox" class="full hidden"><div class="muted">BNB Share Fee Recipient Address</div><input id="feeRecipientAddress" placeholder="0x..."></div>
+<div id="splitBox" class="full hidden"><div class="muted">Split Recipients JSON</div><textarea id="splitRecipients">[{"recipient":"0x000000000000000000000000000000000000dEaD","bps":10000}]</textarea></div>
+<div id="giftBox" class="full hidden"><div class="muted">Gift Vault X Handle (lowercase)</div><input id="xHandle" placeholder="username"></div>
+<div id="customBox" class="full hidden"><div class="muted">Custom Vault Factory</div><input id="vaultFactory" placeholder="0x..."><div class="muted" style="margin-top:8px">Custom Vault Data</div><input id="vaultData" value="0x"></div>
+<div class="grid3 full">
+<div><div class="muted">Tax Duration</div><input id="taxDuration" value="0"></div>
+<div><div class="muted">Anti Farmer Duration</div><input id="antiFarmerDuration" value="0"></div>
+<div><div class="muted">Minimum Share Balance</div><input id="minimumShareBalance" value="0"></div>
+<div><div class="muted">MKT BPS</div><input id="mktBps" value="10000"></div>
+<div><div class="muted">Deflation BPS</div><input id="deflationBps" value="0"></div>
+<div><div class="muted">Dividend BPS</div><input id="dividendBps" value="0"></div>
+</div>
+<div class="full"><div class="muted">Image</div><input id="image" type="file" accept="image/*"></div>
+</div>
+<div class="btns" style="margin-top:14px"><button class="btn-ghost" id="processBtn">Processing</button><button class="btn-primary" id="launchBtn">Launch</button></div>
+<div class="status" id="status">ready</div></div>
+
+<div class="card"><div class="toolbar"><button class="pill active" data-mode="all">All</button><button class="pill" data-mode="almost-bonded">Almost Bonded</button><button class="pill" data-mode="migrated">Migrated</button><button class="pill" data-mode="new">New</button></div>
+<div class="toolbar"><button class="pill active" data-source="all">All</button><button class="pill" data-source="flap">Flap</button><button class="pill" data-source="four">Four</button></div>
+<div id="recent" class="list"></div></div></div></div>
+<script>
+let currentMode="all", currentSource="all"; const $=id=>document.getElementById(id), statusBox=$("status");
+function setStatus(t){statusBox.textContent=t}
+function show(el, yes){ $(el).classList.toggle("hidden", !yes); }
+function updateVaultUI(){
+  const v=$("caStore").value;
+  show("bnbshareBox", v==="bnbshare");
+  show("splitBox", v==="split");
+  show("giftBox", v==="gift");
+  show("customBox", v==="custom");
+}
+$("caStore").addEventListener("change", updateVaultUI); updateVaultUI();
+async function processingOnly(){
+  setStatus("processing...");
+  const body = Object.fromEntries(new FormData(document.getElementById("launchForm")||document.body));
+  body.caStore = $("caStore").value; body.taxRate = $("taxRate").value; body.mktBps = $("mktBps").value;
+  const res=await fetch("/api/processing",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(body)});
+  const data=await res.json();
+  if(!data.ok){setStatus("error\n"+data.error);return;}
+  setStatus(data.predicted ? `processing...\npredicted: ${data.predicted}\nsuffix: ${data.suffix}` : "processing...");
+}
+function formDataBuild(){
+  const fd=new FormData();
+  ["source","caStore","name","symbol","supply","devBuy","description","website","twitter","telegram","beneficiary","feeRecipientAddress","splitRecipients","xHandle","vaultFactory","vaultData","taxRate","taxDuration","antiFarmerDuration","minimumShareBalance","mktBps","deflationBps","dividendBps"].forEach(k=>fd.append(k, $(k).value));
+  if($("image").files[0]) fd.append("image",$("image").files[0]);
+  return fd;
+}
+async function launch(){ setStatus("processing..."); const res=await fetch("/api/launch",{method:"POST",body:formDataBuild()}); const data=await res.json(); if(!data.ok){setStatus("error\n"+data.error); return;} setStatus("success\n"+data.bscscanTxUrl); if(data.chartUrl) window.open(data.chartUrl,"_blank"); await loadRecent(); }
+function itemHtml(x){ const progress=Math.max(0,Math.min(100,Number(x.progress||0))); return `<div class="item"><div class="top"><div><b>${x.name} (${x.symbol})</b><div class="muted">${(x.source||"flap").toUpperCase()} • ${(x.caStore||"none")} • ${Number(x.taxRate||0)>0?"tax":"no-tax"}</div></div><div class="tag">${x.status||"new"}</div></div><div style="margin-top:10px" class="progress"><div class="bar" style="width:${progress}%"></div></div><div class="muted" style="margin-top:6px">Bonding progress: ${progress}%</div><div class="links">${x.txHash?`<a href="https://bscscan.com/tx/${x.txHash}" target="_blank">tx hash</a>`:""}${x.chartUrl?`<a href="${x.chartUrl}" target="_blank">chart</a>`:""}${x.platformUrl?`<a href="${x.platformUrl}" target="_blank">view on platform</a>`:""}</div></div>`; }
+async function loadRecent(){ const res=await fetch(`/api/recent?mode=${encodeURIComponent(currentMode)}&source=${encodeURIComponent(currentSource)}`); const data=await res.json(); $("recent").innerHTML=data.items.map(itemHtml).join("")||"<div class='muted'>empty</div>"; }
+document.querySelectorAll("[data-mode]").forEach(btn=>btn.addEventListener("click",async()=>{document.querySelectorAll("[data-mode]").forEach(x=>x.classList.remove("active")); btn.classList.add("active"); currentMode=btn.dataset.mode; await loadRecent();}));
+document.querySelectorAll("[data-source]").forEach(btn=>btn.addEventListener("click",async()=>{document.querySelectorAll("[data-source]").forEach(x=>x.classList.remove("active")); btn.classList.add("active"); currentSource=btn.dataset.source; await loadRecent();}));
+$("processBtn").addEventListener("click",processingOnly); $("launchBtn").addEventListener("click",launch); loadRecent();
+</script></body></html>
