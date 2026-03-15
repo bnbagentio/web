@@ -1,0 +1,1 @@
+Full synthlaunch repo base with uploaded UI mounted at /bnbagent-ui.html and used for / and /launch routes. Logic/api files preserved from base repo.

@@ -1,0 +1,16 @@
+node_modules/
+.next/
+out/
+.env
+.env.local
+.env.production.local
+.env.development.local
+*.tsbuildinfo
+next-env.d.ts
+.vercel
+
+# Hardhat
+cache-hardhat/
+artifacts/
+typechain-types/
+.admin_secret
