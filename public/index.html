@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>BNBAgent Flap Basic V2</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Cabinet+Grotesk:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#05070a;--bg2:#090d12;--card:#0b1018;--border:#172030;--border2:#1f2e44;--four:#f5a623;--four2:#ff6b00;--flap:#6c3cff;--flap2:#c63cff;--green:#00e676;--red:#ff3d57;--yellow:#ffd740;--text:#ddeeff;--muted:#4a6580;--dim:#253545;--font-d:'Cabinet Grotesk',sans-serif;--font-m:'IBM Plex Mono',monospace}
+*{margin:0;padding:0;box-sizing:border-box}body{background:var(--bg);color:var(--text);font-family:var(--font-d);overflow-x:hidden}
+body::after{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(23,32,48,.4) 1px, transparent 1px),linear-gradient(90deg, rgba(23,32,48,.4) 1px, transparent 1px);background-size:48px 48px;pointer-events:none;z-index:0}
+.wrap{max-width:1280px;margin:0 auto;padding:24px;position:relative;z-index:1}
+.hero{padding:36px 0 24px;text-align:center}
+.hero h1{font-size:clamp(42px,8vw,86px);line-height:.95;font-weight:900;letter-spacing:-2px}
+.hero h1 .a{color:#fff}.hero h1 .b{background:linear-gradient(90deg,var(--four),var(--four2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}.hero h1 .c{background:linear-gradient(90deg,var(--flap),var(--flap2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hero p{margin:16px auto 0;max-width:760px;color:var(--muted);font-size:16px}
+.row{display:grid;grid-template-columns:480px 1fr;gap:18px}@media(max-width:1024px){.row{grid-template-columns:1fr}}
+.card{background:linear-gradient(180deg, rgba(11,16,24,.96), rgba(7,11,18,.96));border:1px solid var(--border);border-radius:22px;padding:18px;box-shadow:0 10px 32px rgba(0,0,0,.35)}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.full{grid-column:1/-1}.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+label{display:block;font-size:12px;color:var(--muted);margin-bottom:6px;text-transform:uppercase;letter-spacing:.08em}
+input,select,textarea{width:100%;border-radius:14px;border:1px solid var(--border2);background:#08111d;color:var(--text);padding:14px 14px;font-family:var(--font-m)}
+textarea{min-height:92px;resize:vertical}
+.btns{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+button{border:0;border-radius:14px;padding:13px 18px;font-weight:900;cursor:pointer}
+.btn-primary{background:linear-gradient(90deg,var(--four),var(--four2));color:#111827}
+.btn-secondary{background:#101826;color:#fff;border:1px solid var(--border2)}
+.status{margin-top:14px;white-space:pre-wrap;background:#08111d;border:1px solid var(--border2);border-radius:16px;padding:14px;font-family:var(--font-m);min-height:108px}
+.list{display:grid;gap:12px}.item{background:#08111d;border:1px solid var(--border2);border-radius:18px;padding:14px}
+.top{display:flex;justify-content:space-between;align-items:center;gap:12px}.tag{padding:6px 10px;border-radius:999px;background:#101826;border:1px solid var(--border2);font-size:12px}
+.links{display:flex;gap:12px;flex-wrap:wrap;margin-top:10px}a{color:var(--yellow);text-decoration:none}
+.hidden{display:none}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="hero">
+    <h1><span class="a">Launch on</span> <span class="c">Flap</span></h1>
+    <p>No Tax + Tax basic only. Flow pakai newTokenV2 + vanity salt.</p>
+  </div>
+
+  <div class="row">
+    <div class="card">
+      <div class="grid">
+        <div>
+          <label>Mode</label>
+          <select id="mode">
+            <option value="notax">No Tax</option>
+            <option value="tax">Tax Basic</option>
+          </select>
+        </div>
+        <div>
+          <label>Beneficiary (no tax)</label>
+          <input id="beneficiary" placeholder="0x... optional">
+        </div>
+        <div>
+          <label>Token Name</label>
+          <input id="name" value="BNBClaw">
+        </div>
+        <div>
+          <label>Symbol</label>
+          <input id="symbol" value="BNBCLAW">
+        </div>
+        <div class="full">
+          <label>Description</label>
+          <textarea id="description">BNBClaw AI agent on BNB Chain</textarea>
+        </div>
+        <div>
+          <label>Website</label>
+          <input id="website" placeholder="https://...">
+        </div>
+        <div>
+          <label>Twitter</label>
+          <input id="twitter" placeholder="https://x.com/...">
+        </div>
+        <div class="full">
+          <label>Telegram</label>
+          <input id="telegram" placeholder="https://t.me/...">
+        </div>
+        <div class="full hidden" id="taxWrap">
+          <div class="grid3">
+            <div>
+              <label>Tax Rate (bps)</label>
+              <input id="taxRate" value="200">
+            </div>
+          </div>
+        </div>
+        <div class="full">
+          <label>Image</label>
+          <input id="image" type="file" accept="image/*">
+        </div>
+      </div>
+
+      <div class="btns">
+        <button class="btn-secondary" id="processBtn">Processing</button>
+        <button class="btn-primary" id="launchBtn">Launch</button>
+      </div>
+
+      <div class="status" id="status">ready</div>
+    </div>
+
+    <div class="card">
+      <div style="font-weight:900;margin-bottom:12px">Recent Launches</div>
+      <div class="list" id="recent"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+const $ = (id) => document.getElementById(id);
+const statusBox = $("status");
+
+function setStatus(t){ statusBox.textContent = t; }
+function updateMode(){
+  $("taxWrap").classList.toggle("hidden", $("mode").value !== "tax");
+}
+$("mode").addEventListener("change", updateMode);
+updateMode();
+
+function formDataBuild(){
+  const fd = new FormData();
+  const isTax = $("mode").value === "tax";
+  fd.append("name", $("name").value);
+  fd.append("symbol", $("symbol").value);
+  fd.append("description", $("description").value);
+  fd.append("website", $("website").value);
+  fd.append("twitter", $("twitter").value);
+  fd.append("telegram", $("telegram").value);
+  fd.append("beneficiary", $("beneficiary").value);
+  fd.append("taxRate", isTax ? $("taxRate").value : "0");
+  if ($("image").files[0]) fd.append("image", $("image").files[0]);
+  return fd;
+}
+
+async function processingOnly(){
+  const body = { taxRate: $("mode").value === "tax" ? Number($("taxRate").value || 0) : 0 };
+  setStatus("processing...");
+  const res = await fetch("/api/processing", {
+    method:"POST",
+    headers:{ "Content-Type":"application/json" },
+    body: JSON.stringify(body)
+  });
+  const data = await res.json();
+  if(!data.ok){ setStatus("error\n" + data.error); return; }
+  setStatus(`processing...\npredicted: ${data.predicted}\nsuffix: ${data.suffix}`);
+}
+
+async function launch(){
+  setStatus("processing...");
+  const res = await fetch("/api/launch", { method:"POST", body: formDataBuild() });
+  const data = await res.json();
+  if(!data.ok){ setStatus("error\n" + data.error); return; }
+  setStatus(`success\n${data.bscscanTxUrl}\npredicted: ${data.predicted}\nsuffix: ${data.suffix}`);
+  if (data.chartUrl) window.open(data.chartUrl, "_blank");
+  loadRecent();
+}
+
+function itemHtml(x){
+  return `<div class="item">
+    <div class="top">
+      <div><b>${x.name} (${x.symbol})</b></div>
+      <div class="tag">${Number(x.taxRate||0)>0 ? "tax" : "no-tax"}</div>
+    </div>
+    <div class="links">
+      ${x.txHash ? `<a href="https://bscscan.com/tx/${x.txHash}" target="_blank">tx hash</a>` : ""}
+      ${x.chartUrl ? `<a href="${x.chartUrl}" target="_blank">chart</a>` : ""}
+      ${x.platformUrl ? `<a href="${x.platformUrl}" target="_blank">view on platform</a>` : ""}
+    </div>
+  </div>`;
+}
+
+async function loadRecent(){
+  const res = await fetch("/api/recent");
+  const data = await res.json();
+  $("recent").innerHTML = data.items.map(itemHtml).join("") || "<div style='color:#4a6580'>empty</div>";
+}
+
+$("processBtn").addEventListener("click", processingOnly);
+$("launchBtn").addEventListener("click", launch);
+loadRecent();
+</script>
+</body>
+</html>
